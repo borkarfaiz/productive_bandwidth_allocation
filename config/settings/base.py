@@ -273,3 +273,7 @@ ADMIN_URL = r'^admin/'
 
 # Your common stuff: Below this line define 3rd party library settings
 # ------------------------------------------------------------------------------
+
+
+# Customize Signup form has been used
+ACCOUNT_SIGNUP_FORM_CLASS= 'productive_bandwidth_allocation.users.forms.SignupForm'
