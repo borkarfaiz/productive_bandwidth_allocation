@@ -276,4 +276,4 @@ ADMIN_URL = r'^admin/'
 
 
 # Customize Signup form has been used
-ACCOUNT_SIGNUP_FORM_CLASS= 'productive_bandwidth_allocation.users.forms.SignupForm'
+ACCOUNT_SIGNUP_FORM_CLASS= 'productive_bandwidth_allocation.users.forms.MySignupForm'
