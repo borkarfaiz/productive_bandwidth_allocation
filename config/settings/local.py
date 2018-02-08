@@ -9,6 +9,8 @@ Local settings for Productive Bandwidth Allocation project.
 - Add django-extensions as app
 """
 
+from os import getenv
+
 from .base import *  # noqa
 
 # DEBUG
@@ -25,12 +27,12 @@ SECRET_KEY = env('DJANGO_SECRET_KEY', default='bgAzPIlcoE1gSDuoI8jpzmuXkefLCwGmR
 # Mail settings
 # ------------------------------------------------------------------------------
 
-EMAIL_PORT = 1025
+EMAIL_PORT = 587
 
-EMAIL_HOST = 'localhost'
-EMAIL_BACKEND = env('DJANGO_EMAIL_BACKEND',
-                    default='django.core.mail.backends.console.EmailBackend')
-
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = getenv('EMAIL_ID')
+EMAIL_HOST_PASSWORD = getenv('EMAIL_PASSWORD')
 
 # CACHING
 # ------------------------------------------------------------------------------
