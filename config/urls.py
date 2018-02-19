@@ -2,24 +2,23 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic import TemplateView
 from django.views import defaults as default_views
+from django.views.generic import TemplateView
 
 urlpatterns = [
-    url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
-    url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
+                  url(r'^$', TemplateView.as_view(template_name='pages/home.html'), name='home'),
+                  url(r'^about/$', TemplateView.as_view(template_name='pages/about.html'), name='about'),
 
-    # Django Admin, use {% url 'admin:index' %}
-    url(settings.ADMIN_URL, admin.site.urls),
+                  # Django Admin, use {% url 'admin:index' %}
+                  url(settings.ADMIN_URL, admin.site.urls),
 
-    # User management
-    url(r'^users/', include('productive_bandwidth_allocation.users.urls', namespace='users')),
-    url(r'^accounts/', include('allauth.urls')),
+                  # User management
+                  url(r'^users/', include('productive_bandwidth_allocation.users.urls', namespace='users')),
+                  url(r'^accounts/', include('allauth.urls')),
 
-    # Your stuff: custom urls includes go here
+                  # Your stuff: custom urls includes go here
 
-
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit
@@ -32,6 +31,7 @@ if settings.DEBUG:
     ]
     if 'debug_toolbar' in settings.INSTALLED_APPS:
         import debug_toolbar
+
         urlpatterns = [
-            url(r'^__debug__/', include(debug_toolbar.urls)),
-        ] + urlpatterns
+                          url(r'^__debug__/', include(debug_toolbar.urls)),
+                      ] + urlpatterns
