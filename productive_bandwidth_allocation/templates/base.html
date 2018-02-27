@@ -4,6 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <title>{% block title %}Productive Bandwidth Allocation{% endblock title %}</title>
+    <link rel="shortcut icon" href={% static 'images/phcethome.jpg' %}/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -66,10 +67,12 @@
                 <a id="log-in-link" class="nav-link" href="{% url 'account_login' %}">{% trans "Sign In" %}</a>
               </li>
             {% endif %}
+            {% if request.user.is_superuser %}
             <li>
               {# URL for admin login  #}
               <a class="nav-link" href="{% url 'admin:index' %}">Admin</a>
             </li>
+            {% endif %}
           </ul>
         </div>
       </nav>
