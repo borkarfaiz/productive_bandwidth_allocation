@@ -36,13 +36,3 @@ class User(AbstractUser):
             return True
         else:
             return False
-
-
-class Usage(models.Model):
-    group = models.CharField(default='f', max_length=10)
-    education = models.IntegerField()
-    related_education = models.IntegerField()
-    other = models.IntegerField()
-
-    def __str__(self):
-        self.group
