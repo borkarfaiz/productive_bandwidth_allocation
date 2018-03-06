@@ -10,6 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 
 DEFAULT_AGE = 18
 
+
 @python_2_unicode_compatible
 class User(AbstractUser):
     # First Name and Last Name do not cover name patterns
@@ -37,3 +38,14 @@ class User(AbstractUser):
             return True
         else:
             return False
+
+
+class SiteUrl(models.Model):
+    user = models.ForeignKey(User,
+                             verbose_name=_('user'),
+                             on_delete=models.CASCADE)
+    url = models.URLField(verbose_name=_('site_url'),
+                          help_text='Enter the url of a website you want to visit')
+
+    def __str__(self):
+        return f'{self.user.username} {self.url}'
