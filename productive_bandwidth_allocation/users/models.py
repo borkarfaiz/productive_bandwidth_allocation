@@ -1,5 +1,5 @@
 import re
-from datetime import date
+from datetime import timedelta, date
 
 from django.contrib.auth.models import AbstractUser
 from django.db import models
@@ -8,13 +8,14 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
+DEFAULT_AGE = 18
 
 @python_2_unicode_compatible
 class User(AbstractUser):
     # First Name and Last Name do not cover name patterns
     # around the globe.
     name = models.CharField(_('Name of User'), blank=False, max_length=255)
-    birth_date = models.DateField(_('Birth date of user'), default=now())
+    birth_date = models.DateField(_('Birth date of user'), default=now() - timedelta(days=DEFAULT_AGE * 365))
     department = models.CharField(_('Department of User'), blank=False, max_length=255)
     is_student = models.BooleanField(_('Student or not'), blank=False, default=False)
 
