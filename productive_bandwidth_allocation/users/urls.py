@@ -13,14 +13,20 @@ urlpatterns = [
         view=views.UserRedirectView.as_view(),
         name='redirect'
     ),
-    url(
-        regex=r'^(?P<username>[\w.@+-]+)/$',
-        view=views.UserDetailView.as_view(),
-        name='detail'
-    ),
+
     url(
         regex=r'^~update/$',
         view=views.UserUpdateView.as_view(),
         name='update'
+    ),
+    url(
+        regex=r'^browse/$',
+        view=views.BrowseView.as_view(),
+        name='browse'
+    ),
+    url(
+        regex=r'^(?P<username>[\w.@+-]+)/$',
+        view=views.UserDetailView.as_view(),
+        name='detail'
     ),
 ]

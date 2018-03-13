@@ -23,3 +23,4 @@ class MySignupForm(forms.Form):
         user.department = self.cleaned_data['department']
         user.is_student = User.is_user_student(user)
         user.save()
+

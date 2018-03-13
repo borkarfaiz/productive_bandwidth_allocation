@@ -8,7 +8,7 @@ class AccountAdapter(DefaultAccountAdapter):
         return getattr(settings, 'ACCOUNT_ALLOW_REGISTRATION', True)
 
     def clean_email(self, email):
-        college_email = r'\w+@(student|staff).mes.ac.in'
+        college_email = r'\w+@(student).mes.ac.in'
         # if re.match(college_email, email):
         if email:
             return email

@@ -1,8 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
+from django.views.generic.edit import CreateView
 
-from .models import User
+from .models import User, SiteUrl
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -21,7 +22,6 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
-
     fields = ['name', ]
 
     # we already imported User in the view code above, remember?
@@ -43,3 +43,18 @@ class UserListView(LoginRequiredMixin, ListView):
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
+
+class BrowseView(LoginRequiredMixin, CreateView):
+    template_name = "users/browse.html"
+    model = SiteUrl
+    fields = ['url']
+
+    # form_class = WebBrowse
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(BrowseView, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('users:browse',
+                       )
