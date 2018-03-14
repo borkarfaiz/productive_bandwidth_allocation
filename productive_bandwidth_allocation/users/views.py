@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
@@ -48,13 +49,20 @@ class BrowseView(LoginRequiredMixin, CreateView):
     template_name = "users/browse.html"
     model = SiteUrl
     fields = ['url']
+    context_object_name = 'latest_url_list'
 
-    # form_class = WebBrowse
+    """Save the input with Foreign Key"""
 
     def form_valid(self, form):
         form.instance.user = self.request.user
+        messages.success(self.request, 'You have Successfully visited the site')
         return super(BrowseView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('users:browse',
-                       )
+        return reverse('users:browse', )
+
+    def get_context_data(self, **kwargs):
+        return dict(
+            super(BrowseView, self).get_context_data(**kwargs),
+            last_url=self.request.user.siteurl_set.all()[:5]
+        )

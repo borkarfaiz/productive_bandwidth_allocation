@@ -6,7 +6,6 @@
 {% block title %}User: {{ request.user.username }}{% endblock %}
 
 {% block content %}
-  <h1>{% trans "How" %}</h1>
   <div class="container">
     <div class="row">
       <div class="col-6">
@@ -18,6 +17,16 @@
       </div>
     </div>
   </div>
+
+
+  {% if last_url %}
+    <p>Your last {{ last_url|length }} visited site</p>
+    {% for url in last_url %}
+      <li>{{ url.url }}</li>
+    {% endfor %}
+  {% else %}
+    <p>No site visited by you</p>
+  {% endif %}
 
 {% endblock content %}
 
