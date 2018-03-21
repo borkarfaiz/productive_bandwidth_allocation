@@ -8,6 +8,8 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
+from .users_classification import predict_group
+
 DEFAULT_AGE = 18
 
 
@@ -18,7 +20,6 @@ class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=False, max_length=255)
     birth_date = models.DateField(_('Birth date of user'), default=now() - timedelta(days=DEFAULT_AGE * 365 - 1))
     department = models.CharField(_('Department of User'), blank=False, max_length=255)
-    is_student = models.BooleanField(_('Student or not'), blank=False, default=True)
 
     def __str__(self):
         return self.username
@@ -28,8 +29,9 @@ class User(AbstractUser):
 
     def age(self):
         today = date.today()
-        return today.year - self.birth_date.year - (
+        age = today.year - self.birth_date.year - (
             (today.month, today.day) < (self.birth_date.month, self.birth_date.day))
+        return age
 
     def is_student(self):
         student_email = r'\w+@(student).mes.ac.in'
@@ -38,6 +40,9 @@ class User(AbstractUser):
             return True
         else:
             return False
+
+    def user_class(self):
+        return predict_group(dept='comps', is_student=self.is_student(), age=self.age())
 
 
 class SiteUrl(models.Model):
@@ -50,8 +55,7 @@ class SiteUrl(models.Model):
     def domain_name(self):
         start = self.url.index('//') + 2
         end = self.url.index('/', start)
-        print(start)
         return self.url[start:end]
 
     def __str__(self):
-        return f'{self.user.username} {self.domain_name()}'
+        return f'{self.user.user_class()} grp visited {self.domain_name()}'
