@@ -1,3 +1,5 @@
+import webbrowser
+
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
@@ -59,10 +61,12 @@ class BrowseView(LoginRequiredMixin, CreateView):
         return super(BrowseView, self).form_valid(form)
 
     def get_success_url(self):
+        last_site = self.request.user.siteurl_set.last()
+        webbrowser.open(url=last_site.url)
         return reverse('users:browse', )
 
     def get_context_data(self, **kwargs):
         return dict(
             super(BrowseView, self).get_context_data(**kwargs),
-            last_url=self.request.user.siteurl_set.all()[:5]
+            last_url=self.request.user.siteurl_set.all()[:10]
         )
