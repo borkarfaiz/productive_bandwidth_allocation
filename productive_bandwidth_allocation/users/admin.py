@@ -32,6 +32,7 @@ class MyUserCreationForm(UserCreationForm):
 class MyUserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
+
     fieldsets = (
                     ('User Profile', {'fields': ('name',)}),
                 ) + AuthUserAdmin.fieldsets
@@ -39,4 +40,5 @@ class MyUserAdmin(AuthUserAdmin):
     search_fields = ['name']
 
 
+admin.site.site_header = 'Productive Bandwidth Allocation'
 admin.site.register(SiteUrl)
