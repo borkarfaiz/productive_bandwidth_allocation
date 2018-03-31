@@ -9,7 +9,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import export_graphviz
 
-dept_dict = {'comps': True, 'extc': True, 'IT': True}
 # Reading the data
 data = pd.read_csv(r'productive_bandwidth_allocation\users\data\users.csv', header=None, index_col=False, names=['dept',
                                                                                                                  'is_student',
@@ -37,6 +36,26 @@ Y = data_dummies['grp'].values
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=0)
 dt = c.fit(X_train, Y_train)
+
+
+def dept_list(columns_list=new_features_list):
+    dept_list = []
+    for dept in columns_list:
+        if dept.startswith('dept'):
+            dept_list.append(dept)
+        else:
+            pass
+    return dept_list
+
+
+def dept_dict(ls=dept_list()):
+    dept_dict = dict()
+    for item in ls:
+        dept_dict[item] = True
+    return dept_dict
+
+
+dept_dict = dept_dict()
 
 
 # use to predict the group of user
@@ -81,4 +100,4 @@ def show_tree(tree=dt, features=new_features_list, path=r'productive_bandwidth_a
     plt.imshow(img)
 
 # Generates a Tree
-show_tree()
+# show_tree()
