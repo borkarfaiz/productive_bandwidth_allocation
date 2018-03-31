@@ -23,10 +23,14 @@ data_dummies = pd.get_dummies(data)
 c = DecisionTreeClassifier(criterion="entropy")
 
 # features = data_dummies.ix[:, 'is_student', 'age', 'dept_COMPS', 'dept_Extc']  for indexing this lined has been used
-print(data_dummies.columns)
-new_labels = ['is_student', 'age', 'dept_COMPS', 'dept_Extc']
-# new = data_dummies.ix['is_student':'dept_Extc'][:]
-features = data_dummies[new_labels]
+# print(data_dummies.columns)
+new_labels = ['is_student', 'age', 'dept_COMPS', ]
+
+# selecting all the columns for features except grp which is a label
+new = data_dummies.ix[:]
+new.pop('grp')
+
+features = data_dummies[new.columns]
 
 X = features.values
 Y = data_dummies['grp'].values
@@ -68,7 +72,7 @@ def dept_conversion(dept, dept_dict=dept_dict):
     raise Exception('The Department Doesn\'t exit')
 
 
-def show_tree(tree=dt, features=new_labels, path='user_tree.png'):
+def show_tree(tree=dt, features=new_labels, path=r'productive_bandwidth_allocation\users\data\user_tree.png'):
     f = io.StringIO()
     export_graphviz(tree, out_file=f, feature_names=features)
     pydotplus.graph_from_dot_data(f.getvalue()).write_png(path)
@@ -76,5 +80,5 @@ def show_tree(tree=dt, features=new_labels, path='user_tree.png'):
     plt.rcParams["figure.figsize"] = (20, 20)
     plt.imshow(img)
 
-# Prints the tree
+# Generates a Tree
 # show_tree()
