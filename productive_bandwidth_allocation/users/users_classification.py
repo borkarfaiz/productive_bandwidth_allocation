@@ -10,10 +10,11 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import export_graphviz
 
 # Reading the data
-data = pd.read_csv(r'productive_bandwidth_allocation\users\data\users.csv', header=None, index_col=False, names=['dept',
-                                                                                                                 'is_student',
-                                                                                                                 'age',
-                                                                                                                 'grp'])
+data = pd.read_csv(r'productive_bandwidth_allocation\users\data\users.csv', header=None, index_col=False,
+                   names=['department',
+                          'is_student',
+                          'age',
+                          'group'])
 
 # It is used for One-Hot encoding
 data_dummies = pd.get_dummies(data)
@@ -21,51 +22,72 @@ data_dummies = pd.get_dummies(data)
 # ID3 Decision Tree algorithm has been used criterion="entropy"
 c = DecisionTreeClassifier(criterion="entropy")
 
-# features = data_dummies.ix[:, 'is_student', 'age', 'dept_COMPS', 'dept_Extc']  for indexing this lined has been used
-# print(data_dummies.columns)
-
-
-# selecting all the columns for features except grp which is a label
+# selecting all the columns for features except group which is a label
 new = data_dummies.ix[:]
-new.pop('grp')
+new.pop('group')
 new_features_list = new.columns
 features = data_dummies[new_features_list]
 
 X = features.values
-Y = data_dummies['grp'].values
+Y = data_dummies['group'].values
 
 X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=0)
 dt = c.fit(X_train, Y_train)
 
+plain_dept_list = []
 
-def dept_list(columns_list=new_features_list):
-    dept_list = []
-    for dept in columns_list:
-        if dept.startswith('dept'):
-            dept_list.append(dept)
+
+def department_list(columns_list=new_features_list):
+    department_list = []
+    for department in columns_list:
+        if department.startswith('department'):
+            department_list.append(department)
+            plain_dept_list.append(department.replace('department_', '').upper())
         else:
             pass
-    return dept_list
+    return department_list
 
 
-def dept_dict(ls=dept_list()):
-    dept_dict = dict()
-    for item in ls:
-        dept_dict[item] = True
-    return dept_dict
+department_list = department_list()
 
 
-dept_dict = dept_dict()
+def department_dict(depatment_list=department_list):
+    department_dict = dict()
+    for item in depatment_list:
+        department_dict[item] = True
+    return department_dict
+
+
+department_dict = department_dict()
+
+
+def department_exist(department_name, department_list=plain_dept_list):
+    for departments in department_list:
+        if departments.lower() == department_name.lower():
+            return True
+    raise Exception("Department Doesn't exist")
+
+
+# set only one department to true and other to false
+def department_conversion(department_name, department_dict=department_dict):
+    if department_exist(department_name):
+        for key, value in department_dict.items():
+            strip_key = key.replace('department_', '')
+            if strip_key.lower() == department_name.lower():
+                department_dict[key] = True
+            else:
+                department_dict[key] = False
+        return department_dict
 
 
 # use to predict the group of user
-def predict_group(dept='comps', dept_dict=dept_dict, is_student=True, age=19):
-    department_set = dept_conversion(dept, dept_dict)
+def predict_group(department_name='comps', department_dict=department_dict, is_student=True, age=19):
+    department_set = department_conversion(department_name, department_dict)
     if isinstance(is_student, bool):
         pass
     else:
         is_student = str2bool(is_student)
-    group = c.predict([[is_student, age, department_set['comps'], department_set['extc']]])
+    group = c.predict([[is_student, age] + list(department_set.values())])
     return group[0]
 
 
@@ -79,18 +101,6 @@ def str2bool(v):
         raise Exception('You should enter a boolean value')
 
 
-# set only one dept to true and other to false
-def dept_conversion(dept, dept_dict=dept_dict):
-    if dept in dept_dict:
-        for key, value in dept_dict.items():
-            if key == dept:
-                dept_dict[key] = True
-            else:
-                dept_dict[key] = True
-        return dept_dict
-    raise Exception('The Department Doesn\'t exit')
-
-
 def show_tree(tree=dt, features=new_features_list, path=r'productive_bandwidth_allocation\users\data\user_tree.png'):
     f = io.StringIO()
     export_graphviz(tree, out_file=f, feature_names=features)
@@ -100,4 +110,4 @@ def show_tree(tree=dt, features=new_features_list, path=r'productive_bandwidth_a
     plt.imshow(img)
 
 # Generates a Tree
-# show_tree()
+show_tree()
