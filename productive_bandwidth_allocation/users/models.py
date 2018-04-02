@@ -42,7 +42,7 @@ class User(AbstractUser):
             return False
 
     def user_class(self):
-        return predict_group(dept='comps', is_student=self.is_student(), age=self.age())
+        return predict_group(department_name=self.department, is_student=self.is_student(), age=self.age())
 
 
 class SiteUrl(models.Model):

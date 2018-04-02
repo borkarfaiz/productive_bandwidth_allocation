@@ -21,6 +21,6 @@ class MySignupForm(forms.Form):
         # user.last_name = self.cleaned_data['last_name']
         user.birth_date = self.cleaned_data["birth_date"]
         user.department = self.cleaned_data['department']
-        user.is_student = User.is_user_student(user)
+        user.is_student = User.is_student(user)
         user.save()
 
