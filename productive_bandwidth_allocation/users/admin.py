@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.models import Group
 
 from .models import User, SiteUrl
 
@@ -42,3 +43,4 @@ class MyUserAdmin(AuthUserAdmin):
 
 admin.site.site_header = 'Productive Bandwidth Allocation'
 admin.site.register(SiteUrl)
+admin.site.unregister(Group)
