@@ -3,6 +3,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group
+from django.utils.translation import ugettext_lazy as _
 
 from .models import User, SiteUrl
 
@@ -33,7 +34,13 @@ class MyUserCreationForm(UserCreationForm):
 class MyUserAdmin(AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
-
+    AuthUserAdmin.fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser',
+                                       )}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
     fieldsets = (
                     ('User Profile', {'fields': ('name', 'birth_date', 'department')}),
                 ) + AuthUserAdmin.fieldsets
