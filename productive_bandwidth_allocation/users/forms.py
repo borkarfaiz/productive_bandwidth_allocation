@@ -5,10 +5,10 @@ from django.utils.timezone import now
 from .models import User
 
 DEPARTMENTS = [
-    ('comps', 'Computer'),
-    ('extc', 'Electronics'),
-    ('civil', 'Civil'),
-    ('mech', 'Mechanical'),
+    ('Computer', 'Computer'),
+    ('Electronics', 'Electronics'),
+    ('Civil', 'Civil'),
+    ('Mechanical', 'Mechanical'),
 ]
 
 
