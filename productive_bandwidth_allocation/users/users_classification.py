@@ -65,7 +65,7 @@ def department_exist(department_name, department_list=plain_dept_list):
     for departments in department_list:
         if departments.lower() == department_name.lower():
             return True
-    raise Exception("Department Doesn't exist")
+    raise Exception(f"{department_name} Department Doesn't exist")
 
 
 # set only one department to true and other to false
@@ -81,7 +81,7 @@ def department_conversion(department_name, department_dict=department_dict):
 
 
 # use to predict the group of user
-def predict_group(department_name='comps', department_dict=department_dict, is_student=True, age=19):
+def predict_group(department_name='Computer', department_dict=department_dict, is_student=True, age=19):
     department_set = department_conversion(department_name, department_dict)
     if isinstance(is_student, bool):
         pass
