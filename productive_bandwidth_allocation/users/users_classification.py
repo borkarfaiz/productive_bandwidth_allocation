@@ -9,8 +9,9 @@ from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.tree import export_graphviz
 
+DATA_PATH = r'productive_bandwidth_allocation\users\data'
 # Reading the data
-data = pd.read_csv(r'productive_bandwidth_allocation\users\data\users.csv', header=None, index_col=False,
+data = pd.read_csv(DATA_PATH + r'\users.csv', header=None, index_col=False,
                    names=['department',
                           'is_student',
                           'age',
@@ -101,7 +102,7 @@ def str2bool(v):
         raise Exception('You should enter a boolean value')
 
 
-def show_tree(tree=dt, features=new_features_list, path=r'productive_bandwidth_allocation\users\data\user_tree.png'):
+def show_tree(tree=dt, features=new_features_list, path=DATA_PATH + r'\user_tree.png'):
     f = io.StringIO()
     export_graphviz(tree, out_file=f, feature_names=features)
     pydotplus.graph_from_dot_data(f.getvalue()).write_png(path)
