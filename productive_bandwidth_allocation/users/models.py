@@ -20,7 +20,7 @@ class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=False, max_length=255)
     birth_date = models.DateField(_('Birth date of user'), default=now() - timedelta(days=DEFAULT_AGE * 365 - 1))
     department = models.CharField(_('Department of User'), blank=False, max_length=255)
-
+    
     def __str__(self):
         return self.username
 
@@ -75,9 +75,9 @@ class Usage(models.Model):
     group = models.OneToOneField(UserGroup,
                                  verbose_name=_('group of user'),
                                  on_delete=models.CASCADE)
-    education = models.IntegerField()
-    education_related = models.IntegerField()
-    other = models.IntegerField()
+    education = models.PositiveIntegerField(default=0)
+    education_related = models.PositiveIntegerField(default=0)
+    other = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f'{self.education} {self.education_related} {self.other}'

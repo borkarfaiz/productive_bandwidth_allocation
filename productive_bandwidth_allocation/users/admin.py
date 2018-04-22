@@ -46,6 +46,7 @@ class MyUserAdmin(AuthUserAdmin):
     search_fields = ['name', 'department']
 
 
+@admin.register(SiteUrl)
 class AdminSiteUrl(admin.ModelAdmin):
     list_display = ('user', 'domain_name', 'url', 'user_group')
 
@@ -55,14 +56,20 @@ class AdminSiteUrl(admin.ModelAdmin):
     user_group.ordering = 'user__user_class'
 
 
-class UsageAdmin(admin.ModelAdmin):
+@admin.register(Usage)
+class AdminUsage(admin.ModelAdmin):
     list_display = ('group', 'education', 'education_related', 'other')
+
+    def has_add_permission(self, request):
+        return False
+
+
+@admin.register(UserGroup)
+class AdminUserGroup(admin.ModelAdmin):
+    list_display = ('group',)
 
 
 admin.site.site_header = 'Productive Bandwidth Allocation'
-admin.site.register(SiteUrl, AdminSiteUrl)
-admin.site.register(Usage, UsageAdmin)
-admin.site.register(UserGroup)
 
 # default admin site Group has been removed
 admin.site.unregister(Group)
