@@ -14,6 +14,13 @@ data = pd.read_csv(DATA_PATH + r'\webshrinkerkeys.csv', header=None, index_col=F
                           'secret_key',
                           'remaining_attempts'])
 
+EDUCATION = ['Education & Self-Help', 'Education', 'Self-Help', 'Information Technology']
+EDUCATION_RELATED = ['Blogs and Personal Sites', 'Blogs', 'Personal Sites', 'Economy and Finance',
+                     'Economy', 'Finance', 'Health', 'Humor', 'Jobs & Careers', 'Jobs', 'Careers',
+                     'Media Sharing', 'Messageboards and Forums', 'Messageboards', 'Forums',
+                     'News and Media', 'News', 'Media', 'Search Engines and Portals', 'Search Engines',
+                     'Portals', 'Streaming Media', 'Translation Sites']
+
 
 def classify_url(url):
     user_info = get_info()
@@ -46,9 +53,22 @@ def classify_url(url):
         # General error occurred
         print("A general error occurred, try the request again")
     update_info(user_info)
-    for information in json_data['data']:
-        for categories in information['categories']:
-            return categories['label']
+
+    def get_label(json_data):
+        for information in json_data['data']:
+            for categories in information['categories']:
+                return categories['label']
+
+    label = get_label(json_data)
+    if label in EDUCATION:
+        print('Educational website has been visited')
+        return 'Education'
+    elif label in EDUCATION_RELATED:
+        print('Education Related website has been visited')
+        return 'Education_Related'
+    else:
+        print('Other website has been visited')
+        return 'Other'
 
 
 def web_shrinker_categories_v3(access_key, secret_key, url=b"", params={}):
