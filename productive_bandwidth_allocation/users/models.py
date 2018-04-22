@@ -9,6 +9,7 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from .users_classification import predict_group
+from .website_classifier import classify_url
 
 DEFAULT_AGE = 18
 
@@ -20,7 +21,7 @@ class User(AbstractUser):
     name = models.CharField(_('Name of User'), blank=False, max_length=255)
     birth_date = models.DateField(_('Birth date of user'), default=now() - timedelta(days=DEFAULT_AGE * 365 - 1))
     department = models.CharField(_('Department of User'), blank=False, max_length=255)
-    
+
     def __str__(self):
         return self.username
 
@@ -62,22 +63,14 @@ class SiteUrl(models.Model):
         return f'{self.user.user_class()} grp visited {self.domain_name()}'
 
 
-class UserGroup(models.Model):
-    group = models.IntegerField(unique=True,
-                                verbose_name=_('group number'),
-                                help_text='Group of the user')
-
-    def __str__(self):
-        return f'Group number {self.group}'
-
-
 class Usage(models.Model):
-    group = models.OneToOneField(UserGroup,
-                                 verbose_name=_('group of user'),
-                                 on_delete=models.CASCADE)
+    group = models.PositiveIntegerField(unique=True,
+                                        verbose_name=_('group number'),
+                                        help_text='Group of the user')
     education = models.PositiveIntegerField(default=0)
     education_related = models.PositiveIntegerField(default=0)
     other = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f'{self.education} {self.education_related} {self.other}'
+        return f'Group Number:{self.group} Education:{self.education} ' \
+               f'Related Education:{self.education_related} Other:{self.other}'

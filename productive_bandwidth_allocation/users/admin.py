@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User, SiteUrl, Usage, UserGroup
+from .models import User, SiteUrl, Usage
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -62,11 +62,6 @@ class AdminUsage(admin.ModelAdmin):
 
     def has_add_permission(self, request):
         return False
-
-
-@admin.register(UserGroup)
-class AdminUserGroup(admin.ModelAdmin):
-    list_display = ('group',)
 
 
 admin.site.site_header = 'Productive Bandwidth Allocation'
