@@ -32,9 +32,7 @@ EMAIL_PORT = 587
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = getenv('EMAIL_ID')
-EMAIL_HOST_USER = 'BORKARFAIZ@GMAIL.COM'
 EMAIL_HOST_PASSWORD = getenv('EMAIL_PASSWORD')
-EMAIL_HOST_PASSWORD = 'F02111993'
 
 # CACHING
 # ------------------------------------------------------------------------------

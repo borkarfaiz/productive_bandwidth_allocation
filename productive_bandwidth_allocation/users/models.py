@@ -42,7 +42,8 @@ class User(AbstractUser):
             return False
 
     def user_class(self):
-        return predict_group(department_name=self.department, is_student=self.is_student(), age=self.age())
+        group = int(predict_group(department_name=self.department, is_student=self.is_student(), age=self.age()))
+        return group
 
 
 class SiteUrl(models.Model):
@@ -59,3 +60,24 @@ class SiteUrl(models.Model):
 
     def __str__(self):
         return f'{self.user.user_class()} grp visited {self.domain_name()}'
+
+
+class UserGroup(models.Model):
+    group = models.IntegerField(unique=True,
+                                verbose_name=_('group number'),
+                                help_text='Group of the user')
+
+    def __str__(self):
+        return f'Group number {self.group}'
+
+
+class Usage(models.Model):
+    group = models.OneToOneField(UserGroup,
+                                 verbose_name=_('group of user'),
+                                 on_delete=models.CASCADE)
+    education = models.IntegerField()
+    education_related = models.IntegerField()
+    other = models.IntegerField()
+
+    def __str__(self):
+        return f'{self.education} {self.education_related} {self.other}'

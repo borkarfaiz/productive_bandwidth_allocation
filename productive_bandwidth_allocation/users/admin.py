@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.contrib.auth.models import Group
 from django.utils.translation import ugettext_lazy as _
 
-from .models import User, SiteUrl
+from .models import User, SiteUrl, Usage, UserGroup
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -40,12 +40,29 @@ class MyUserAdmin(AuthUserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     fieldsets = (
-                    ('User Profile', {'fields': ('name', 'birth_date', 'department')}),
+                    ('User Profile', {'fields': ('name', 'birth_date', 'department', 'email')}),
                 ) + AuthUserAdmin.fieldsets
     list_display = ('username', 'name', 'email', 'is_student', 'department', 'age', 'user_class', 'last_login')
     search_fields = ['name', 'department']
 
 
+class AdminSiteUrl(admin.ModelAdmin):
+    list_display = ('user', 'domain_name', 'url', 'user_group')
+
+    def user_group(self, obj):
+        return obj.user.user_class()
+
+    user_group.ordering = 'user__user_class'
+
+
+class UsageAdmin(admin.ModelAdmin):
+    list_display = ('group', 'education', 'education_related', 'other')
+
+
 admin.site.site_header = 'Productive Bandwidth Allocation'
-admin.site.register(SiteUrl)
+admin.site.register(SiteUrl, AdminSiteUrl)
+admin.site.register(Usage, UsageAdmin)
+admin.site.register(UserGroup)
+
+# default admin site Group has been removed
 admin.site.unregister(Group)

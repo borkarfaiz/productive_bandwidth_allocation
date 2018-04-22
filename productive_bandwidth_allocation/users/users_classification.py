@@ -71,7 +71,8 @@ def department_exist(department_name, department_list=plain_dept_list):
 
 # set only one department to true and other to false
 def department_conversion(department_name, department_dict=department_dict):
-    if department_exist(department_name):
+    # if department_exist(department_name):
+    if True:
         for key, value in department_dict.items():
             strip_key = key.replace('department_', '')
             if strip_key.lower() == department_name.lower():
