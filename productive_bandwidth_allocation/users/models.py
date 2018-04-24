@@ -74,3 +74,12 @@ class Usage(models.Model):
     def __str__(self):
         return f'Group Number:{self.group} Education:{self.education} ' \
                f'Related Education:{self.education_related} Other:{self.other}'
+
+    def productive_percentage(self):
+        total_no_of_visited_site = self.education + self.education_related + self.other
+        productive = self.education * 1 + self.education_related * 0.7 + self.other * 0.2
+        try:
+            productive_percentage = str(round((productive / total_no_of_visited_site) * 100, 2)) + '%'
+        except ZeroDivisionError:
+            productive_percentage = '0%'
+        return productive_percentage

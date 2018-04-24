@@ -5,6 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse
 from django.views.generic import DetailView, ListView, RedirectView, UpdateView
 from django.views.generic.edit import CreateView
+from django.http import HttpResponse
 
 from .models import User, SiteUrl, Usage
 from .website_classifier import classify_url
@@ -74,12 +75,13 @@ class BrowseView(LoginRequiredMixin, CreateView):
 
     def open_new_web_page(self):
         last_site = self.request.user.siteurl_set.last()
-        webbrowser.open(url=last_site.url)
+        # webbrowser.open(last_site.url)
+        # return HttpResponse(f"<script>window.open({last_site.url})</script>")
 
     def form_valid(self, form):
         form.instance.user = self.request.user
         self.save_group_data()
-        # self.open_new_web_page()
+        self.open_new_web_page()
         messages.success(self.request, 'You have Successfully visited the site')
         return super(BrowseView, self).form_valid(form)
 

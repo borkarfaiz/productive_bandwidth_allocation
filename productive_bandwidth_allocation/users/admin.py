@@ -58,7 +58,7 @@ class AdminSiteUrl(admin.ModelAdmin):
 
 @admin.register(Usage)
 class AdminUsage(admin.ModelAdmin):
-    list_display = ('group', 'education', 'education_related', 'other')
+    list_display = ('group', 'education', 'education_related', 'other', 'productive_percentage')
 
     def has_add_permission(self, request):
         return False
