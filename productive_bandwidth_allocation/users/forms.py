@@ -9,11 +9,12 @@ DEPARTMENTS = [
     ('Electronics', 'Electronics'),
     ('Civil', 'Civil'),
     ('Mechanical', 'Mechanical'),
+    ('IT', 'IT'),
 ]
 
 
 class MySignupForm(forms.Form):
-    birth_date = forms.DateField(widget=SelectDateWidget(years=(range(1980, now().year))))
+    birth_date = forms.DateField(widget=SelectDateWidget(years=(range(now().year - 70), now().year)))
     department = forms.CharField(label='Select Your Branch', widget=forms.Select(choices=DEPARTMENTS))
 
     def signup(self, request, user):

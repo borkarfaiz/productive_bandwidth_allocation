@@ -112,4 +112,4 @@ def show_tree(tree=dt, features=new_features_list, path=DATA_PATH + r'\user_tree
     plt.imshow(img)
 
 # Generates a Tree
-# show_tree()
+show_tree()
